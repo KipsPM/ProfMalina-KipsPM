@@ -1,0 +1,67 @@
+version: '3.3'
+services:
+
+  mongodb:
+    image: mongo:3.2
+    command: mongod --port 27018
+    ports:
+      - 27018:27018
+    volumes:
+      - mongodb:/data/db
+    # environment: 
+    #   - MONGO_INITDB_ROOT_USERNAME=test
+    #   - MONGO_INITDB_ROOT_PASSWORD=test
+    networks:
+      - back_net
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbit:/var/lib/rabbitmq/mnesia/rabbit
+    networks:
+      - back_net
+    environment:
+      - RABBITMQ_DEFAULT_USER=test
+      - RABBITMQ_DEFAULT_PASS=test
+
+  ui:
+    build: ./search_engine_ui
+    ports:
+      - 8000:8000
+    networks:
+      - front_net
+      - back_net
+    environment:
+      - MONGO=mongodb
+      - MONGO_PORT=27018
+      - FLASK_APP=/app/ui/ui.py
+    depends_on:
+      - mongodb
+
+  crawler:
+    build: ./search_engine_crawler
+    environment:
+      - MONGO=mongodb
+      - MONGO_PORT=27018
+      - RMQ_HOST=rabbitmq
+      - RMQ_QUEUE=mqqueue
+      - RMQ_USERNAME=test
+      - RMQ_PASSWORD=test
+      - CHECK_INTERVAL=10
+      - EXCLUDE_URLS=".*github.com"
+    networks:
+      - back_net
+    depends_on:
+      - mongodb
+      - rabbitmq
+
+volumes:
+  mongodb:
+  rabbit:
+
+networks:
+  front_net:
+  back_net:
