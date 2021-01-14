@@ -1,0 +1,11 @@
+============================
+
+yc managed-kubernetes cluster get catqvgnbroo062l08ilq --format=json \
+| jq -r .master.endpoints.external_v4_endpoint
+
+yc managed-kubernetes cluster get catqvgnbroo062l08ilq --format=json \
+| jq -r .master.master_auth.cluster_ca_certificate
+
+helm init --service-account tiller --override spec.selector.matchLabels.'name'='tiller',spec.selector.matchLabels.'app'='helm' --output yaml | sed 's@apiVersion: extensions/v1beta1@apiVersion: apps/v1@' | kubectl apply -f -
+
+================================
