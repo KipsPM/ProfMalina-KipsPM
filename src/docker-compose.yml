@@ -28,7 +28,7 @@ services:
       - RABBITMQ_DEFAULT_PASS=test
 
   ui:
-    build: ./src/search_engine_ui
+    build: ./search_engine_ui
     ports:
       - 8000:8000
     networks:
@@ -42,7 +42,7 @@ services:
       - mongodb
 
   crawler:
-    build: ./src/search_engine_crawler
+    build: ./search_engine_crawler
     environment:
       - MONGO=mongodb
       - MONGO_PORT=27018

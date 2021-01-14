@@ -47,8 +47,8 @@ resource "yandex_kubernetes_cluster" "otus_cluster" {
 
 resource "yandex_kubernetes_node_group" "otus_node_group" {
   cluster_id  = yandex_kubernetes_cluster.otus_cluster.id
-  name        = "name"
-  description = "description"
+  name        = "otus-node-group"
+  description = "otus node group"
   version     = "1.18"
 
   # labels = {
