@@ -1,4 +1,4 @@
-resource "yandex_kms_symmetric_key" "key-kubernetes" {
+resource "yandex_kms_symmetric_key" "key_kubernetes" {
   name              = "key-kubernetes"
   description       = "description for key"
   default_algorithm = "AES_128"
@@ -6,7 +6,7 @@ resource "yandex_kms_symmetric_key" "key-kubernetes" {
 }
 
 resource "yandex_kubernetes_cluster" "otus_cluster" {
-  name        = "otus_cluster"
+  name        = "otus-cluster"
   description = "for otus coursework"
 
   network_id = var.network_id
@@ -37,16 +37,16 @@ resource "yandex_kubernetes_cluster" "otus_cluster" {
   #   my_other_key = "my_other_value"
   # }
 
-  release_channel = "RAPID"
+  release_channel         = "RAPID"
   network_policy_provider = "CALICO"
 
   kms_provider {
-    key_id = "${yandex_kms_symmetric_key.key-kubernetes.id}"
+    key_id = yandex_kms_symmetric_key.key_kubernetes.id
   }
 }
 
 resource "yandex_kubernetes_node_group" "otus_node_group" {
-  cluster_id  = "${yandex_kubernetes_cluster.otus_cluster.id}"
+  cluster_id  = yandex_kubernetes_cluster.otus_cluster.id
   name        = "name"
   description = "description"
   version     = "1.18"
@@ -79,15 +79,9 @@ resource "yandex_kubernetes_node_group" "otus_node_group" {
     #   size = 4
     # }
     auto_scale {
-      initial_size = 2
-      max_size = 10
-      min_zone_size = 3
-      measurement_duration = 60
-      warmup_duration = 60
-      stabilization_duration = 120
-      cpu_utilization_rule {
-        utilization_target = 75
-      }
+      initial = 2
+      max = 10
+      min = 2
     }
   }
 

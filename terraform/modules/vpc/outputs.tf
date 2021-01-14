@@ -1,9 +1,6 @@
-output "redit_subnet" {
-  value = yandex_vpc_subnet.app-subnet.id
+output "kubernetes_subnet" {
+  value = yandex_vpc_subnet.kubernetes_subnet.id
 }
-# output "addr" {
-#   value = yandex_vpc_address.addr.external_ipv4_address.0.address
-# }
-output "redit_net" {
-  value = yandex_vpc_network.app-network.id
+output "kubernetes_network" {
+  value = yandex_vpc_network.kubernetes_network.id
 }

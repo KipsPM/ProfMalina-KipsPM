@@ -9,7 +9,7 @@ module "vpc" {
 }
 module "kubernetes" {
   source                 = "../modules/kubernetes"
-  network_id             = module.vpc.redit_net
+  network_id             = module.vpc.kubernetes_network
   service_account_key_id = var.service_account_key_id
-  subnet_id              = module.vpc.redit_subnet
+  subnet_id              = module.vpc.kubernetes_subnet
 }
