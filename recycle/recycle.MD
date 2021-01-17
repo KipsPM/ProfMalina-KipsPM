@@ -43,3 +43,10 @@ An example Ingress that makes use of the controller:
         - hosts:
             - www.example.com
           secretName: example-tls
+====================================
+    - kubectl config set-cluster otus-cluster --server="$KUBE_URL" --insecure-skip-tls-verify=true
+    - kubectl config set-credentials admin --token="$KUBE_TOKEN"
+    - kubectl config set-context default --cluster=otus-cluster --user=admin
+    - kubectl config use-context default
+====================
+helm upgrade --install --wait --set ui.ingress.host="staging.my-random-name.xyz" --set ui.image.tag="latest" --set crawler.image.tag="latest"--namespace="staging" --version="23-54" testing search_engine/

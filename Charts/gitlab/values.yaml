@@ -44,9 +44,8 @@ global:
     allowClusterRoles: true
   ## doc/charts/globals.md#configure-host-settings
   hosts:
-    # domain: my-random-name.xyz
-    # domain: 84-201-159-222.sslip.io
     domain: my-random-name.xyz
+    # domain: 84-201-159-222.sslip.io
     hostSuffix:
     https: true
     externalIP:

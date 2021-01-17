@@ -1,7 +1,0 @@
-name: crawler
-version: 1.0.0
-description: OTUS search engine application Crawler
-maintainers:
-- name: malinovskiyri
-email: malinovskiyr@inbox.ru
-appVersion: 1.0

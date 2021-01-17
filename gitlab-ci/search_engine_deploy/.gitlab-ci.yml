@@ -2,17 +2,17 @@
 image: alpine:latest
 
 stages:
-  - test
+  # - test
   - staging
   - production
 
-test:
-  stage: test
-  script:
-    - exit 0
-  only:
-    - triggers
-    - branches
+# test:
+#   stage: test
+#   script:
+#     - exit 0
+#   only:
+#     - triggers
+#     - branches
 
 staging:
   stage: staging
@@ -25,40 +25,30 @@ staging:
     - curl https://get.helm.sh/helm-v3.5.0-linux-amd64.tar.gz | tar zx
     - mv linux-amd64/helm /usr/bin/
     - helm version --client
-    - curl -L -o /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+    - curl -L -o /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.18.12/bin/linux/amd64/kubectl
     - chmod +x /usr/bin/kubectl
     - kubectl version --client
+    - kubectl config set-cluster otus-cluster --server="$KUBE_URL" --insecure-skip-tls-verify=true
+    - kubectl config set-credentials admin --token="$KUBE_TOKEN"
+    - kubectl config set-context default --cluster=otus-cluster --user=admin
+    - kubectl config use-context default
+    - kubectl auth can-i create namespace
     - kubectl get namespace "$KUBE_NAMESPACE" || kubectl create namespace "$KUBE_NAMESPACE"
-    # - >
-    #   if ! helm version --debug; then
-    #     echo "Failed to init Tiller."
-    #     return 1
-    #   fi
+    - helm repo add stable https://charts.helm.sh/stable
+    - helm repo update
   script:
     - echo $KUBE_NAMESPACE
     - track="${1-stable}"
     - name="$CI_ENVIRONMENT_SLUG"
-    - helm dep build
-    # --set ui.image.tag="$(curl http://CI_SERVER_URL/$CI_PROJECT_NAMESPACE/ui/raw/master/VERSION)" \
-    # --set post.image.tag="$(curl http://CI_SERVER_URL/$CI_PROJECT_NAMESPACE/post/raw/master/VERSION)" \
-    # --set comment.image.tag="$(curl http://CI_SERVER_URL/$CI_PROJECT_NAMESPACE/comment/raw/master/VERSION)" \
-    - >
-      helm upgrade --install \
-        --wait \
-        --set ui.ingress.host="$host" \
-        --set ui.image.tag="latest" \
-        --set post.image.tag="latest" \
-        --set comment.image.tag="latest" \
-        --namespace="$KUBE_NAMESPACE" \
-        --version="$CI_PIPELINE_ID-$CI_JOB_ID" \
-        "$name" \
-        serch_engine
+    - helm dep build search_engine
+    - host="staging.my-random-name.xyz"
+    - helm upgrade --install --wait --set ui.ingress.host="$host" --set ui.image.tag="latest" --set crawler.image.tag="latest" --namespace="$KUBE_NAMESPACE" --version="$CI_PIPELINE_ID-$CI_JOB_ID" "$name" search_engine
   variables:
     KUBE_NAMESPACE: staging
     TILLER_NAMESPACE: kube-system
   environment:
     name: staging
-    url: http://my-random-name.xyz
+    url: https://staging.my-random-name.xyz
   only:
     refs:
       - master
@@ -67,26 +57,25 @@ staging:
 production:
   stage: production
   before_script:
-  - apk add -U openssl curl tar gzip bash ca-certificates git
-  - wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
-  - wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.23-r3/glibc-2.23-r3.apk
-  - apk add glibc-2.23-r3.apk
-  - rm glibc-2.23-r3.apk
-  - curl https://kubernetes-helm.storage.googleapis.com/helm-v2.13.1-linux-amd64.tar.gz | tar zx
-  - mv linux-amd64/helm /usr/bin/
-  - helm version --client
-  - curl -L -o /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-  - chmod +x /usr/bin/kubectl
-  - kubectl version --client
-  - kubectl describe namespace "$KUBE_NAMESPACE" || kubectl create namespace "$KUBE_NAMESPACE"
-  - echo "Checking Tiller..."
-  - helm init --upgrade --stable-repo-url https://charts.helm.sh/stable
-  - kubectl rollout status -n "$TILLER_NAMESPACE" -w "deployment/tiller-deploy"
-  - >
-    if ! helm version --debug; then
-      echo "Failed to init Tiller."
-      return 1
-    fi
+    - apk add -U openssl curl tar gzip bash ca-certificates git
+    - wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
+    - wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.23-r3/glibc-2.23-r3.apk
+    - apk add glibc-2.23-r3.apk
+    - rm glibc-2.23-r3.apk
+    - curl https://get.helm.sh/helm-v3.5.0-linux-amd64.tar.gz | tar zx
+    - mv linux-amd64/helm /usr/bin/
+    - helm version --client
+    - curl -L -o /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.18.12/bin/linux/amd64/kubectl
+    - chmod +x /usr/bin/kubectl
+    - kubectl version --client
+    - kubectl config set-cluster otus-cluster --server="$KUBE_URL" --insecure-skip-tls-verify=true
+    - kubectl config set-credentials admin --token="$KUBE_TOKEN"
+    - kubectl config set-context default --cluster=otus-cluster --user=admin
+    - kubectl config use-context default
+    - kubectl auth can-i create namespace
+    - kubectl get namespace "$KUBE_NAMESPACE" || kubectl create namespace "$KUBE_NAMESPACE"
+    - helm repo add stable https://charts.helm.sh/stable
+    - helm repo update
   script:
     - export track="${1-stable}"
     - >
@@ -96,25 +85,23 @@ production:
     - echo $KUBE_NAMESPACE
     - track="${1-stable}"
     - name="$CI_ENVIRONMENT_SLUG"
-    - helm dep build reddit
-
+    - helm dep build search_engine
+    - host="staging.my-random-name.xyz"
     - >
       helm upgrade --install \
-        --wait \
-        --set ui.ingress.host="$host" \
-        --set ui.image.tag="latest" \
-        --set post.image.tag="latest" \
-        --set comment.image.tag="latest" \
+        --wait --set ui.ingress.host="$host" \
+        --set ui.image.tag="$(curl http://CI_SERVER_URL/$CI_PROJECT_NAMESPACE/ui/raw/master/VERSION)" \
+        --set crawler.image.tag="$(curl http://CI_SERVER_URL/$CI_PROJECT_NAMESPACE/crawler/raw/master/VERSION)" \
         --namespace="$KUBE_NAMESPACE" \
         --version="$CI_PIPELINE_ID-$CI_JOB_ID" \
         "$name" \
-        reddit
+        search_engine
   variables:
     KUBE_NAMESPACE: production
     TILLER_NAMESPACE: kube-system
   environment:
     name: production
-    url: http://production.my-random-name.xyz
+    url: https://production.my-random-name.xyz
   # when: manual
   only:
     refs:
