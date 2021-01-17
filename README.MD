@@ -12,14 +12,15 @@ kluster up
 
 install gitlab
 
-use helm3
+use helm3.5
+# ВНИМАНИЕ версия 3.0 отрабатывает не корректно
 
 `helm3 repo add gitlab https://charts.gitlab.io`
 `helm3 fetch gitlab/gitlab --untar`
 `cd gitlab`
 
 change certmanager-issuer
-change domain 284-201-159-222.sslip.io
+change domain my-random-name.xyz
 ========
 add gitlab-runner `privileged: true`
 alternative https://github.com/GoogleContainerTools/kaniko
@@ -32,17 +33,16 @@ gitlab-ci
 
 add projects in gitlab
 
-`git remote add origin git@gitlab.284-201-159-222.sslip.io:search_engine/ui.git`
-`git remote add origin git@gitlab.284-201-159-222.sslip.io:search_engine/crawler.git`
-
-
+`git remote add origin git@gitlab.my-random-name.xyz:search_engine/ui.git`
+`git remote add origin git@gitlab.my-random-name.xyz:search_engine/crawler.git`
 
 `helm3 upgrade --install gitlab .`
 
 add .gitlab-ci.yml
 
 see
-gitlab.284-201-159-222.sslip.io user:root password:otusgitlab
+
+gitlab.my-random-name.xyz user:root password:otusgitlab
 
 add `CI_REGISTRY_USER CI_REGISTRY_PASSWORD`
 
@@ -63,3 +63,11 @@ kubectl create clusterrolebinding serviceaccounts-cluster-admin \
     --clusterrole=cluster-admin \
     --group=system:serviceaccounts
 
+Разобраться как добавить rabbit через helm3
+============================
+  - name: rabbitmq
+    # varsion: 8.7.0
+    # repository: https://charts.bitnami.com/bitnami
+    version: 6.18.2
+    repository: https://charts.helm.sh/stable
+============================
