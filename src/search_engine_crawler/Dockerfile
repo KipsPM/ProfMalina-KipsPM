@@ -14,7 +14,7 @@ ENV RMQ_PASSWORD=test
 ENV CHECK_INTERVAL=10
 ENV EXCLUDE_URLS=".*github.com"
 ENV PYTHONUNBUFFERED 1
-ENV URL="https://vitkhab.github.io/search_engine_test_site/"
+# ENV URL="https://vitkhab.github.io/search_engine_test_site/"
 
 CMD ["/bin/bash"]
-ENTRYPOINT python crawler/crawler.py $URL
+ENTRYPOINT python crawler/crawler.py https://vitkhab.github.io/search_engine_test_site/

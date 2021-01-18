@@ -49,4 +49,4 @@ An example Ingress that makes use of the controller:
     - kubectl config set-context default --cluster=otus-cluster --user=admin
     - kubectl config use-context default
 ====================
-helm upgrade --install --wait --set ui.ingress.host="staging.my-random-name.xyz" --set ui.image.tag="latest" --set crawler.image.tag="latest"--namespace="staging" --version="23-54" testing search_engine/
+helm upgrade --install --wait --debug --set ui.ingress.host="staging.my-random-name.xyz" --set ui.image.tag="latest" --set --namespace="staging" --version="23-54" testing search_engine/

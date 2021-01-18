@@ -52,7 +52,7 @@ services:
       - RMQ_PASSWORD=test
       - CHECK_INTERVAL=10
       - EXCLUDE_URLS=".*github.com"
-      - URL="https://vitkhab.github.io/search_engine_test_site/"
+      # - URL="https://vitkhab.github.io/search_engine_test_site/"
     networks:
       - back_net
     depends_on:

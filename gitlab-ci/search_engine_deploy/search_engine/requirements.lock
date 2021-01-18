@@ -2,14 +2,8 @@ dependencies:
 - name: ui
   repository: file://../ui
   version: 1.0.0
-- name: crawler
-  repository: file://../crawler
-  version: 1.0.0
 - name: mongodb
   repository: https://charts.helm.sh/stable
   version: 7.8.10
-- name: rabbitmq
-  repository: https://charts.helm.sh/stable
-  version: 6.18.2
-digest: sha256:22d084f10025a40816a72da7ac757a128f47eaeb135627a8cfcdea1ccccb8b7b
-generated: "2021-01-17T17:00:16.757523947+03:00"
+digest: sha256:079b3d92a03740501adccab5ef41b8975c413cdb987478315d1830321ca81689
+generated: "2021-01-18T10:25:18.231609027+03:00"

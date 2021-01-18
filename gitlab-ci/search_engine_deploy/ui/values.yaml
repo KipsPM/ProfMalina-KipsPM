@@ -9,8 +9,8 @@ image:
 
 ingress:
   class: nginx
+  # class: gitlab-nginx
 
 # mongoHost: 
 # mongoPort: 27017
 # flaskApp:
-  

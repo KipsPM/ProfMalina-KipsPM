@@ -4,7 +4,13 @@ kind: Ingress
 metadata:
   name: {{ template "ui.fullname" . }}
   annotations:
+    # certmanager.k8s.io/issuer: gitlab-issuer
     kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+  #   kubernetes.io/ingress.provider: nginx
+  # managedFields:
+  #   - manager: nginx-ingress-controller
+  #     operation: Update
+  #     apiVersion: networking.k8s.io/v1beta1
 spec:
   rules:
   - host: {{ .Values.ingress.host | default .Release.Name }}
