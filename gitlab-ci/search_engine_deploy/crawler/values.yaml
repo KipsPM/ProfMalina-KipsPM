@@ -1,7 +1,7 @@
 ---
 service:
   internalPort: 8000
-  externalPort: 9090
+  externalPort: 8000
 
 image:
   repository: malinovskiyri/crawler

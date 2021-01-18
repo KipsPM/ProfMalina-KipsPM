@@ -43,6 +43,8 @@ services:
 
   crawler:
     build: ./search_engine_crawler
+    ports:
+      - 8001:8000
     environment:
       - MONGO=mongodb
       - MONGO_PORT=27018

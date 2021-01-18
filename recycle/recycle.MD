@@ -50,3 +50,5 @@ An example Ingress that makes use of the controller:
     - kubectl config use-context default
 ====================
 helm upgrade --install --wait --debug --set ui.ingress.host="staging.my-random-name.xyz" --set ui.image.tag="latest" --set --namespace="staging" --version="23-54" testing search_engine/
+
+helm upgrade --install --set ui.ingress.host="staging.130-193-38-169.sslip.io" --set ui.image.tag="latest" --set crawler.image.tag="latest" --namespace="staging" --version="12-22" test search_engine
