@@ -12,12 +12,18 @@ dependencies:
     version: 7.8.10 
     repository: https://charts.helm.sh/stable
 
-  # - name: rabbitmq
-  #   # varsion: 8.7.0
-  #   # repository: https://charts.bitnami.com/bitnami
-  #   version: 6.18.2
-  #   repository: https://charts.helm.sh/stable
-
   - name: rabbitmq
     version: "1.0.0"
     repository: "file://../rabbitmq"
+
+  - name: fluentd
+    version: "1.0.0"
+    repository: "file://../fluentd"
+
+  - name: prometheus
+    version: "1.0.0"
+    repository: "file://../prometheus"
+
+  - name: kibana
+    version: 3.2.8
+    repository: https://charts.helm.sh/stable

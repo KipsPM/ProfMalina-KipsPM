@@ -1,0 +1,11 @@
+---
+service:
+  internalPort: 9090
+  externalPort: 9090
+
+image:
+  repository: malinovskiyri/prometheus
+  tag: latest
+
+ingress:
+  class: nginx

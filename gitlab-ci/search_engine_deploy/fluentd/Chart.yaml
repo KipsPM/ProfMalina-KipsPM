@@ -1,0 +1,6 @@
+name: fluentd
+version: 1.0.1
+description: fluentd
+maintainers:
+- name: malinovskiyri
+  email: malinovskiyr@mail.ru

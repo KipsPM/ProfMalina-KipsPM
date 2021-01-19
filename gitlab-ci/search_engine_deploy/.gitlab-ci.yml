@@ -29,7 +29,7 @@ staging:
     - name="$CI_ENVIRONMENT_SLUG"
     - helm dep build search_engine
     - host="staging.130-193-38-169.sslip.io"
-    - helm upgrade --install --set ui.ingress.host="$host" --set crawler.ingress.host="staging.crawler.130-193-38-169.sslip.io" --set ui.image.tag="latest" --set crawler.image.tag="latest" --namespace="$KUBE_NAMESPACE" --version="$CI_PIPELINE_ID-$CI_JOB_ID" "$name" search_engine
+    - helm upgrade --install --set ui.ingress.host="$host" --set prometheus.ingress.host="staging.130-193-38-169.sslip.io" --set ui.image.tag="latest" --set crawler.image.tag="latest" --namespace="$KUBE_NAMESPACE" --version="$CI_PIPELINE_ID-$CI_JOB_ID" "$name" search_engine
   variables:
     KUBE_NAMESPACE: staging
   environment:
