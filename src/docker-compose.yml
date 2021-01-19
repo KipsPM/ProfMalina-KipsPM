@@ -35,6 +35,11 @@ services:
       - MONGO=mongodb
       - MONGO_PORT=27018
       - FLASK_APP=/app/ui/ui.py
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: service.ui
     depends_on:
       - mongodb
 
@@ -52,6 +57,11 @@ services:
       # - URL="https://vitkhab.github.io/search_engine_test_site/"
     networks:
       - back_net
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: service.crawler
     depends_on:
       - mongodb
       - rabbitmq
@@ -69,6 +79,29 @@ services:
     - '--config.file=/etc/prometheus/prometheus.yml'
     - '--storage.tsdb.path=/prometheus'
     - '--storage.tsdb.retention=1d'
+
+  fluentd:
+    build: ./fluentd
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+
+  elasticsearch:
+    image: elasticsearch:7.4.0
+    environment:
+      - ELASTIC_CLUSTER=false
+      - CLUSTER_NODE_MASTER=true
+      - CLUSTER_MASTER_NODE_NAME=es01
+      - discovery.type=single-node
+    expose:
+      - 9200
+    ports:
+      - "9200:9200"
+
+  kibana:
+    image: kibana:7.4.0
+    ports:
+      - "5601:5601"
 
 volumes:
   mongodb:
