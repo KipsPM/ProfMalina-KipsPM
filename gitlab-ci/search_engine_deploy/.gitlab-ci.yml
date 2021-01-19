@@ -2,26 +2,13 @@
 image: alpine:latest
 
 stages:
-  # - test
   - staging
   - production
-
-# test:
-#   stage: test
-#   script:
-#     - exit 0
-#   only:
-#     - triggers
-#     - branches
 
 staging:
   stage: staging
   before_script:
     - apk add -U openssl curl tar gzip bash ca-certificates git
-    # - wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
-    # - wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.23-r3/glibc-2.23-r3.apk
-    # - apk add glibc-2.23-r3.apk
-    # - rm glibc-2.23-r3.apk
     - curl https://get.helm.sh/helm-v3.5.0-linux-amd64.tar.gz | tar zx
     - mv linux-amd64/helm /usr/bin/
     - helm version --client
@@ -45,7 +32,6 @@ staging:
     - helm upgrade --install --set ui.ingress.host="$host" --set crawler.ingress.host="staging.crawler.130-193-38-169.sslip.io" --set ui.image.tag="latest" --set crawler.image.tag="latest" --namespace="$KUBE_NAMESPACE" --version="$CI_PIPELINE_ID-$CI_JOB_ID" "$name" search_engine
   variables:
     KUBE_NAMESPACE: staging
-    TILLER_NAMESPACE: kube-system
   environment:
     name: staging
     url: http://staging.130-193-38-169.sslip.io
@@ -58,10 +44,6 @@ production:
   stage: production
   before_script:
     - apk add -U openssl curl tar gzip bash ca-certificates git
-    - wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
-    - wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.23-r3/glibc-2.23-r3.apk
-    - apk add glibc-2.23-r3.apk
-    - rm glibc-2.23-r3.apk
     - curl https://get.helm.sh/helm-v3.5.0-linux-amd64.tar.gz | tar zx
     - mv linux-amd64/helm /usr/bin/
     - helm version --client
@@ -86,7 +68,6 @@ production:
     - helm upgrade --install --set ui.ingress.host="$host" --set ui.image.tag="latest" --set crawler.image.tag="latest" --namespace="$KUBE_NAMESPACE" --version="$CI_PIPELINE_ID-$CI_JOB_ID" "$name" search_engine
   variables:
     KUBE_NAMESPACE: production
-    TILLER_NAMESPACE: kube-system
   environment:
     name: production
     url: http://production.130-193-38-169.sslip.io

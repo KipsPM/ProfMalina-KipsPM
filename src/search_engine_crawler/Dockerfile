@@ -17,4 +17,4 @@ ENV PYTHONUNBUFFERED 1
 # ENV URL="https://vitkhab.github.io/search_engine_test_site/"
 
 CMD ["/bin/bash"]
-ENTRYPOINT python crawler/crawler.py https://vitkhab.github.io/search_engine_test_site/
+ENTRYPOINT EXCLUDE_URLS=".*github.com" python crawler/crawler.py https://vitkhab.github.io/search_engine_test_site/
