@@ -1,8 +1,0 @@
----
-service:
-  internalPort: 24224
-  externalPort: 24224
-
-image:
-  repository: malinovskiyri/fluentd
-  tag: latest

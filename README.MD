@@ -84,3 +84,41 @@ kubectl get secret basic-auth -o yaml
     nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - foo'
 
 добавить файл секрет в тэмплэйт
+
+helm fetch stable/prometheus —-untar 
+helm fetch stable/grafana --untar
+
+kubectl get svc
+ip prometheus-server
+dashboard 741 315
+Необходимо добавить метрики для сервисов
+
+EFK
+kubectl get node
+kubectl label node cl1jfqk31hm1hhu00ted-equp elastichost=true
+<!-- kubectl apply -f ./efk -->
+
+<!-- helm fetch stable/kibana --version 0.1.1 --untar -->
+
+helm fetch stable/fluentd --untar
+helm fetch bitnami/fluentd --untar
+=======================
+helm repo add elastic https://helm.elastic.co
+
+Install it:
+helm fetch elastic/elasticsearch --untar
+with Helm 3: helm install elasticsearch elastic/elasticsearch
+with Helm 2 (deprecated): helm install --name elasticsearch elastic/elasticsearch
+
+kubectl get pods --namespace=default -l app=elasticsearch-master -w
+helm test elasticsearch
+=================
+helm repo add elastic https://helm.elastic.co
+
+Install it:
+helm fetch elastic/kibana --untar
+with Helm 3: helm install kibana elastic/kibana
+with Helm 2 (deprecated): helm install --name kibana elastic/kibana
+
+================
+helm install elastic gitlab/elastic-stack
