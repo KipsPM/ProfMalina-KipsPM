@@ -29,7 +29,7 @@ staging:
     - name="$CI_ENVIRONMENT_SLUG"
     - helm dep build search_engine
     - host="staging.130-193-38-169.sslip.io"
-    - helm upgrade --install --set ui.ingress.host="$host" --set prometheus.ingress.host="staging.130-193-38-169.sslip.io" --set ui.image.tag="latest" --set crawler.image.tag="latest" --namespace="$KUBE_NAMESPACE" --version="$CI_PIPELINE_ID-$CI_JOB_ID" "$name" search_engine
+    - helm upgrade --install --set ui.ingress.host="$host" --set prometheus.ingress.host="prometheus.$host" --set ui.image.tag="latest" --set crawler.image.tag="latest" --namespace="$KUBE_NAMESPACE" --version="$CI_PIPELINE_ID-$CI_JOB_ID" "$name" search_engine
   variables:
     KUBE_NAMESPACE: staging
   environment:
@@ -65,7 +65,7 @@ production:
     - helm dep build search_engine
     - host="production.130-193-38-169.sslip.io"
     # - helm upgrade --install --set ui.ingress.host="$host" --set ui.image.tag="$(curl http://CI_SERVER_URL/$CI_PROJECT_NAMESPACE/ui/raw/master/VERSION)" --set crawler.image.tag="$(curl http://CI_SERVER_URL/$CI_PROJECT_NAMESPACE/crawler/raw/master/VERSION)" --namespace="$KUBE_NAMESPACE" --version="$CI_PIPELINE_ID-$CI_JOB_ID" "$name" search_engine
-    - helm upgrade --install --set ui.ingress.host="$host" --set ui.image.tag="latest" --set crawler.image.tag="latest" --namespace="$KUBE_NAMESPACE" --version="$CI_PIPELINE_ID-$CI_JOB_ID" "$name" search_engine
+    - helm upgrade --install --set ui.ingress.host="$host" --set prometheus.ingress.host="prometheus.$host" --set ui.image.tag="latest" --set crawler.image.tag="latest" --namespace="$KUBE_NAMESPACE" --version="$CI_PIPELINE_ID-$CI_JOB_ID" "$name" search_engine
   variables:
     KUBE_NAMESPACE: production
   environment:

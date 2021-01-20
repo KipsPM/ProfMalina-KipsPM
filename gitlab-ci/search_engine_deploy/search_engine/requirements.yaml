@@ -16,14 +16,14 @@ dependencies:
     version: "1.0.0"
     repository: "file://../rabbitmq"
 
-  - name: fluentd
-    version: "1.0.0"
-    repository: "file://../fluentd"
+  # - name: fluentd
+  #   version: "1.0.0"
+  #   repository: "file://../fluentd"
 
-  - name: prometheus
-    version: "1.0.0"
-    repository: "file://../prometheus"
+  # - name: prometheus
+  #   version: "1.0.0"
+  #   repository: "file://../prometheus"
 
-  - name: kibana
-    version: 3.2.8
-    repository: https://charts.helm.sh/stable
+  # - name: kibana
+  #   version: 3.2.8
+  #   repository: https://charts.helm.sh/stable

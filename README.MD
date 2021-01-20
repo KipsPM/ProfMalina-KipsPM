@@ -71,3 +71,16 @@ kubectl create clusterrolebinding serviceaccounts-cluster-admin \
     version: 6.18.2
     repository: https://charts.helm.sh/stable
 ============================
+sudo apt install apache2-utils
+htpasswd -c data.auth foo
+pwd: bar
+kubectl create secret generic basic-auth --from-file=auth
+kubectl get secret basic-auth -o yaml
+
+    nginx.ingress.kubernetes.io/auth-type: basic
+    # name of the secret that contains the user/password definitions
+    nginx.ingress.kubernetes.io/auth-secret: basic-auth
+    # message to display with an appropriate context why the authentication is required
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - foo'
+
+добавить файл секрет в тэмплэйт
