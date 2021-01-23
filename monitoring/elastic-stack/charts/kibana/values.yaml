@@ -1,6 +1,7 @@
 ---
-# elasticsearchHosts: "http://elasticsearch-master:9200"
-elasticsearchHosts: "http://elastic-stack-elasticsearch-master:9200"
+
+elasticsearchURL: "" # "http://elasticsearch-master:9200"
+elasticsearchHosts: "http://elasticsearch-master:9200"
 
 replicas: 1
 
@@ -13,13 +14,6 @@ extraEnvs:
 #  - name: MY_ENVIRONMENT_VAR
 #    value: the_value_goes_here
 
-# Allows you to load environment variables from kubernetes secret or config map
-envFrom: []
-# - secretRef:
-#     name: env-secret
-# - configMapRef:
-#     name: config-map
-
 # A list of secrets and their paths to mount inside the pod
 # This is useful for mounting certificates for security and for mounting
 # the X-Pack license
@@ -29,14 +23,8 @@ secretMounts: []
 #    path: /usr/share/kibana/data/kibana.keystore
 #    subPath: kibana.keystore # optional
 
-hostAliases: []
-#- ip: "127.0.0.1"
-#  hostnames:
-#  - "foo.local"
-#  - "bar.local"
-
 image: "docker.elastic.co/kibana/kibana"
-imageTag: "7.10.2"
+imageTag: "7.6.2"
 imagePullPolicy: "IfNotPresent"
 
 # additionals labels
@@ -102,7 +90,6 @@ updateStrategy:
 
 service:
   type: ClusterIP
-  loadBalancerIP: ""
   port: 5601
   nodePort: ""
   labels: {}
@@ -114,7 +101,6 @@ service:
     # service.beta.kubernetes.io/cce-load-balancer-internal-vpc: "true"
   loadBalancerSourceRanges: []
     # 0.0.0.0/0
-  httpPortName: http
 
 ingress:
   enabled: true
@@ -123,8 +109,8 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   path: /
   hosts:
-    - kibana.130-193-38-169.sslip.io
     # - chart-example.local
+    - kibana.130-193-38-169.sslip.io
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -152,6 +138,3 @@ lifecycle: {}
   # postStart:
   #   exec:
   #     command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
-
-# Deprecated - use only with versions < 6.6
-elasticsearchURL: "" # "http://elasticsearch-master:9200"

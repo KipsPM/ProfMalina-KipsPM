@@ -122,3 +122,18 @@ with Helm 2 (deprecated): helm install --name kibana elastic/kibana
 
 ================
 helm install elastic gitlab/elastic-stack
+
+helm fetch gitlab/elastic-stack --untar
+================
+https://www.digitalocean.com/community/tutorials/how-to-set-up-an-elasticsearch-fluentd-and-kibana-efk-logging-stack-on-kubernetes-ru
+kubectl create -f kube-logging.yaml
+kubectl create -f elasticsearch_svc.yaml
+kubectl create -f elasticsearch_statefulset.yaml
+kubectl rollout status sts/otus-cluster --namespace=kube-logging
+kubectl port-forward otus-cluster-0 9200:9200 --namespace=kube-logging
+kubectl create -f kibana.yaml
+kubectl rollout status deployment/kibana --namespace=kube-logging
+kubectl port-forward kibana-5749b5778b-24rfr 5601:5601 --namespace=kube-logging
+kubectl create -f fluentd.yaml
+kubectl get ds --namespace=kube-logging
+=================
