@@ -1,0 +1,10 @@
+cloud_id                 = "long"
+folder_id                = "live"
+zone                     = "belarus"
+image_id                 = "long"
+public_key_path          = "~/.ssh/appuser.pub"
+subnet_id                = "fake"
+service_account_key_file = "~/.ssh/key.json"
+private_key_path         = "~/.ssh/appuser"
+reddit_listener_port     = 9292
+instances_count          = 2
