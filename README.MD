@@ -105,3 +105,4 @@ EFK
 
 helm repo add gitlab  https://charts.gitlab.io 
 helm fetch gitlab/elastic-stack --untar
+запрос для логов kubernetes.pod.name *staging-ui* and stream *stdout*
