@@ -58,12 +58,6 @@ add projects in gitlab
 
 add .gitlab-ci.yml
 
-see
-
-gitlab.my-random-name.xyz user:root password:otusgitlab
-
-add `CI_REGISTRY_USER CI_REGISTRY_PASSWORD`
-
 add kluster in gitlab
 https://cloud.yandex.ru/docs/solutions/infrastructure-management/gitlab-containers
 Cluster id
@@ -75,20 +69,16 @@ CA Certificate
 Service Token
 `kubectl -n kube-system get secrets -o json | jq -r '.items[] | select(.metadata.name | startswith("gitlab-admin")) | .data.token' | base64 --decode`
 
-ВНИМАНИЕ ПРОБЛЕМА БЕЗОПАСНОСТИ
-Проблема при создании неймспейса, необходим безопасный фикс
-kubectl create clusterrolebinding serviceaccounts-cluster-admin \
-    --clusterrole=cluster-admin \
-    --group=system:serviceaccounts
+add `CI_REGISTRY_USER CI_REGISTRY_PASSWORD KUBE_TOKEN KUBE_URL`
 
-Разобраться как добавить rabbit через helm3
-============================
-  - name: rabbitmq
-    # varsion: 8.7.0
-    # repository: https://charts.bitnami.com/bitnami
-    version: 6.18.2
-    repository: https://charts.helm.sh/stable
-============================
+После заливки проектов добавить `SEARCH_ENGINE_DEPLOY_TRIGGER_TOKEN`
+
+helm add repo stable https://charts.helm.sh/stable
+helm fetch stable/rabbiit
+Затем настройка параметров
+
+Добавление аутентификации
+
 sudo apt install apache2-utils
 htpasswd -c data.auth foo
 pwd: bar
@@ -112,46 +102,6 @@ dashboard 741 315
 Необходимо добавить метрики для сервисов
 
 EFK
-kubectl get node
-kubectl label node cl1jfqk31hm1hhu00ted-equp elastichost=true
-<!-- kubectl apply -f ./efk -->
 
-<!-- helm fetch stable/kibana --version 0.1.1 --untar -->
-
-helm fetch stable/fluentd --untar
-helm fetch bitnami/fluentd --untar
-=======================
-helm repo add elastic https://helm.elastic.co
-
-Install it:
-helm fetch elastic/elasticsearch --untar
-with Helm 3: helm install elasticsearch elastic/elasticsearch
-with Helm 2 (deprecated): helm install --name elasticsearch elastic/elasticsearch
-
-kubectl get pods --namespace=default -l app=elasticsearch-master -w
-helm test elasticsearch
-=================
-helm repo add elastic https://helm.elastic.co
-
-Install it:
-helm fetch elastic/kibana --untar
-with Helm 3: helm install kibana elastic/kibana
-with Helm 2 (deprecated): helm install --name kibana elastic/kibana
-
-================
-helm install elastic gitlab/elastic-stack
-
+helm repo add gitlab  https://charts.gitlab.io 
 helm fetch gitlab/elastic-stack --untar
-================
-https://www.digitalocean.com/community/tutorials/how-to-set-up-an-elasticsearch-fluentd-and-kibana-efk-logging-stack-on-kubernetes-ru
-kubectl create -f kube-logging.yaml
-kubectl create -f elasticsearch_svc.yaml
-kubectl create -f elasticsearch_statefulset.yaml
-kubectl rollout status sts/otus-cluster --namespace=kube-logging
-kubectl port-forward otus-cluster-0 9200:9200 --namespace=kube-logging
-kubectl create -f kibana.yaml
-kubectl rollout status deployment/kibana --namespace=kube-logging
-kubectl port-forward kibana-5749b5778b-24rfr 5601:5601 --namespace=kube-logging
-kubectl create -f fluentd.yaml
-kubectl get ds --namespace=kube-logging
-=================
