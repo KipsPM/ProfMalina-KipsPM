@@ -25,19 +25,3 @@ variable service_account_key_file {
 variable private_key_path {
   description = "Path to the private key used for ssh access"
 }
-variable reddit_listener_port {
-  description = "reddit listener port"
-  default     = 9292
-}
-variable instances_count {
-  description = "Quantity of instances"
-  default     = 1
-}
-variable app_disk_image {
-  description = "Disk image for reddit app"
-  default     = "reddit-app-base"
-}
-variable db_disk_image {
-  description = "Disk image for reddit db"
-  default     = "reddit-db-base"
-}
