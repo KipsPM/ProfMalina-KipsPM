@@ -1,5 +1,20 @@
-test PR
+#Pre-requisites:
+1. terraform 0.13.6
+2. Yandex CLI
 
+#Install guide
+1. Install Kubernetes cluster on YandexCloud
+  - cd otus_kursach/terraform/prod
+  - terraform init
+  - terraform apply -auto-approve
+  - yc managed-kubernetes cluster get-credentials otus-cluster --external
+
+2. Install GitLab
+3. Configure GitLab&Kubernetes
+4. Install Crawler stack
+5. Install Prometheus&Grafana
+6. Install EFK stack
+7. 
 
 add Dockerfile
 
