@@ -1,0 +1,9 @@
+{
+    "gitlab": {
+      "hosts": {
+        "gitlab": {
+          "ansible_host": "84.201.175.87"
+        }
+      }
+    }
+}
