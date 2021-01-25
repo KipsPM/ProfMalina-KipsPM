@@ -10,6 +10,13 @@
   - yc managed-kubernetes cluster get-credentials otus-cluster --external
 
 2. Install GitLab
+  - cd otus_kursach/gitlab-install/terraform
+  - terraform init
+  - terraform apply
+  - cd otus_kursach/gitlab-install/ansible
+  - ansible-playbook playbooks/update.yml
+  - ansible-playbook playbooks/gitlab.yml
+  - login/password for gitlab: root/5iveL!fe  ###Change immediately!
 3. Configure GitLab&Kubernetes
 4. Install Crawler stack
 5. Install Prometheus&Grafana
